@@ -28,7 +28,7 @@ namespace unityai {
                             continue;
                         
                         Mat2D window = prevMap[x..(x+2), y..(y+2)];
-                        (double newVal, _, _) = (window + Mat2D.EuclideanKernal).Min();
+                        (double newVal, _, _) = (window + Kernal).Min();
                         newMap[x+1, y+1] = newVal;
                     }
                 }

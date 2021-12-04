@@ -66,6 +66,28 @@ namespace unityai {
             return A;
         }
 
+        public override bool Equals(object O) {
+            Mat2D A = this;
+            Mat2D B = (Mat2D) O;
+
+            if (A.Size(0) != B.Size(0) || A.Size(1) != B.Size(1))
+                return false;
+            
+            
+            for (int i = 0; i < A.Size(0); i++) {
+                for (int j = 0; j < A.Size(1); j++) {
+                    if (!Object.Equals(A[i, j], B[i, j]))
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        public override int GetHashCode() {
+            return m.GetHashCode();
+        }
+
         // public override bool Equals(object o) {
         //     if(o == null)
         //         return false;
@@ -154,23 +176,9 @@ namespace unityai {
         #region operations
 
         // Equality
-        public static bool operator ==(Mat2D A, Mat2D B)
-        {
-            if (A.Size(0) != B.Size(0) || A.Size(1) != B.Size(1))
-                return false;
-            
-            
-            for (int i = 0; i < A.Size(0); i++) {
-                for (int j = 0; j < A.Size(1); j++) {
-                    if (!Object.Equals(A[i, j], B[i, j]))
-                        return false;
-                }
-            }
+        public static bool operator ==(Mat2D A, Mat2D B) => A.Equals(B);
 
-            return true;
-        }
-
-        public static bool operator !=(Mat2D A, Mat2D B) => !(A == B);
+        public static bool operator !=(Mat2D A, Mat2D B) => !A.Equals(B);
 
         // Element-wise addition
         public static Mat2D operator +(Mat2D A, Mat2D B)
