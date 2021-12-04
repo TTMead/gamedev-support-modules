@@ -219,6 +219,19 @@ namespace unityai {
             return A;
         }
 
+        // Returns the identity matrix of a given size
+        public static Mat2D Eye(int size) {
+            Mat2D A = new Mat2D (size, size);
+
+            for (int i = 0; i < A.Size(0); i++) {
+                for (int j = 0; j < A.Size(1); j++) {
+                    A[i, j] = (i == j) ? 1 : 0;
+                }
+            }
+
+            return A;
+        }
+
 
         #endregion
 
