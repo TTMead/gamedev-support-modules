@@ -1,0 +1,16 @@
+C:\Users\Timothy\OneDrive\Documents\unityai\obj\Debug\net5.0\unityai.csproj.AssemblyReference.cache
+C:\Users\Timothy\OneDrive\Documents\unityai\obj\Debug\net5.0\unityai.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Timothy\OneDrive\Documents\unityai\obj\Debug\net5.0\unityai.AssemblyInfoInputs.cache
+C:\Users\Timothy\OneDrive\Documents\unityai\obj\Debug\net5.0\unityai.AssemblyInfo.cs
+C:\Users\Timothy\OneDrive\Documents\unityai\obj\Debug\net5.0\unityai.csproj.CoreCompileInputs.cache
+C:\Users\Timothy\OneDrive\Documents\unityai\bin\Debug\net5.0\unityai.exe
+C:\Users\Timothy\OneDrive\Documents\unityai\bin\Debug\net5.0\unityai.deps.json
+C:\Users\Timothy\OneDrive\Documents\unityai\bin\Debug\net5.0\unityai.runtimeconfig.json
+C:\Users\Timothy\OneDrive\Documents\unityai\bin\Debug\net5.0\unityai.runtimeconfig.dev.json
+C:\Users\Timothy\OneDrive\Documents\unityai\bin\Debug\net5.0\unityai.dll
+C:\Users\Timothy\OneDrive\Documents\unityai\bin\Debug\net5.0\ref\unityai.dll
+C:\Users\Timothy\OneDrive\Documents\unityai\bin\Debug\net5.0\unityai.pdb
+C:\Users\Timothy\OneDrive\Documents\unityai\obj\Debug\net5.0\unityai.dll
+C:\Users\Timothy\OneDrive\Documents\unityai\obj\Debug\net5.0\ref\unityai.dll
+C:\Users\Timothy\OneDrive\Documents\unityai\obj\Debug\net5.0\unityai.pdb
+C:\Users\Timothy\OneDrive\Documents\unityai\obj\Debug\net5.0\unityai.genruntimeconfig.cache
