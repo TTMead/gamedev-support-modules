@@ -4,21 +4,23 @@ using System.Collections;
 namespace unityai {
     class Mat2D : IEnumerable{
 
-        #region class structure
-
-        public IEnumerator GetEnumerator()
-        {
-            yield return m;
-        }
-
+        // Data reference
         private Object[,] m;
 
+        // Constructor
+        public Mat2D(int rows, int cols)
+        {
+            m = new Object[rows, cols];
+        }
+
+        // Getter / Setter for Values
         public Object this[int rows, int cols]
         {
             get => m[rows, cols];
             set => m[rows, cols] = value;
         }
 
+        // Getter for a range of values
         public Mat2D this[Range rows, Range cols]
         {
             get {
@@ -37,11 +39,12 @@ namespace unityai {
 
                 return A;
             }
-        }  
+        }
 
-        public Mat2D(int rows, int cols)
+        // IEnumerable functions
+        public IEnumerator GetEnumerator()
         {
-            m = new Object[rows, cols];
+            yield return m;
         }
 
         private int currentRow = 0;
@@ -54,6 +57,7 @@ namespace unityai {
             currentRow++;
         }
 
+        
         public Mat2D Clone() {
             Mat2D A = new Mat2D (Size(0), Size(1));
 
@@ -65,6 +69,7 @@ namespace unityai {
 
             return A;
         }
+
 
         public override bool Equals(object O) {
             Mat2D A = this;
@@ -84,30 +89,27 @@ namespace unityai {
             return true;
         }
 
+
         public override int GetHashCode() {
             return m.GetHashCode();
         }
 
-        // public override bool Equals(object o) {
-        //     if(o == null)
-        //         return false;
 
-        //     Mat2D second = o as Mat2D;
 
-        //     return (this == second);
-        // }
+        #region matrix utilities
 
-        #endregion
 
-        #region utilities
-
+        // Returns the size of the matrix as a tuple
         public (int, int) Size() {
             return (m.GetLength(0), m.GetLength(1));
         }
+
+        // Returns the size of the matrix along a given dimension
         public int Size(int dimension) {
             return m.GetLength(dimension);
         }
 
+        // Formats and prints the matrix to the System Console
         public void PrintMatrix() {
             string text = "";
             for (int i = 0; i < m.GetLength(0); i++) {
@@ -131,9 +133,51 @@ namespace unityai {
             Console.WriteLine(text);
         }
 
+
+        // Returns the minimum value and location of this value within the matrix as a tuple.
+        public (double, int, int) Min() {
+            int x = 0;
+            int y = 0;
+
+            double min = double.PositiveInfinity;
+
+            // Iterate through array to find maximum and minimum element in array.
+            //Inside loop for each array element check for maximum and minimum.
+            for (int i = 0; i < m.GetLength(0); i++)
+            {
+                for (int j = 0; j < m.GetLength(1); j++)
+                { 
+                    Object v = m[i, j];
+
+                    if (!(v is int || v is float || v is double))
+                        throw new ArithmeticException("Cannot find min of non-numeric or non-scalar values");
+
+                    double newVal = Convert.ToDouble(v);
+
+                    if (newVal >= 0) {
+                        //Assign current array element to min if if (arr[i,j] < min)
+                        if (newVal < min)
+                        {
+                            min = newVal;
+                            x = i-1;
+                            y = j-1;
+                        }
+                    }
+                }
+
+            }
+
+            return (min, x, y);
+        }
+
+
         #endregion
 
+
+
         #region predefined matrices
+
+        // ======== Kernals ========
 
         public static Mat2D ManhattenKernal = new Mat2D(3, 3) {
             {Double.PositiveInfinity, 1, Double.PositiveInfinity},
@@ -147,6 +191,9 @@ namespace unityai {
             {Math.Pow(2, 0.5), 1, Math.Pow(2, 0.5)}
         };
 
+
+
+        // Returns a matrix of a given size, filled with zeros
         public static Mat2D Zeros(int rows, int cols) {
             Mat2D A = new Mat2D (rows, cols);
 
@@ -159,6 +206,7 @@ namespace unityai {
             return A;
         }
 
+        // Returns a matrix of a given size, filled with ones
         public static Mat2D Ones(int rows, int cols) {
             Mat2D A = new Mat2D (rows, cols);
 
@@ -171,13 +219,18 @@ namespace unityai {
             return A;
         }
 
+
         #endregion
 
+
+
         #region operations
+
 
         // Equality
         public static bool operator ==(Mat2D A, Mat2D B) => A.Equals(B);
 
+        // Inequality
         public static bool operator !=(Mat2D A, Mat2D B) => !A.Equals(B);
 
         // Element-wise addition
@@ -253,52 +306,17 @@ namespace unityai {
             return C;
         }
 
-        // Scalar multiplication is Commutative
+        // Commutativity of Scalar Multiplication
         public static Mat2D operator *(double a, Mat2D B)
         {
             return B * a;
         }
 
 
-
-        public (double, int, int) Min() {
-            int x = 0;
-            int y = 0;
-
-            double min = double.PositiveInfinity;
-
-            // Iterate through array to find maximum and minimum element in array.
-            //Inside loop for each array element check for maximum and minimum.
-            for (int i = 0; i < m.GetLength(0); i++)
-            {
-                for (int j = 0; j < m.GetLength(1); j++)
-                { 
-                    Object v = m[i, j];
-
-                    if (!(v is int || v is float || v is double))
-                        throw new ArithmeticException("Cannot find min of non-numeric or non-scalar values");
-
-                    double newVal = Convert.ToDouble(v);
-
-                    if (newVal >= 0) {
-                        //Assign current array element to min if if (arr[i,j] < min)
-                        if (newVal < min)
-                        {
-                            min = newVal;
-                            x = i-1;
-                            y = j-1;
-                        }
-                    }
-                }
-
-            }
-
-            return (min, x, y);
-        }
-
         #endregion
 
     }
+
 }
 
 
