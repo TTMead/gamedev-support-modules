@@ -232,6 +232,21 @@ namespace unityai {
             return A;
         }
 
+        // Creates a vector of linearly spaced values
+        public static Mat2D Linspace(double start, double end, int numberOfValues) {
+            if (start >= end)
+                throw new ArithmeticException("Start value must be smaller than the End value!");
+
+            Mat2D A = new Mat2D(numberOfValues, 1);
+
+            double increment = (end-start) / numberOfValues;
+            for (int i = 0; i < numberOfValues; i++) {
+                A[i, 1] = start + (i * increment);
+            }
+
+            return A;
+        }
+
 
         #endregion
 
@@ -307,12 +322,10 @@ namespace unityai {
                 for (int j = 0; j < A.Size(1); j++) {
                     Object a = A[i, j];
 
-                    if ((a is int || a is float || a is double)) {
-                        C[i, j] = Convert.ToDouble(a) * b;
-                    } else {
+                    if (!(a is int || a is float || a is double))
                         throw new ArithmeticException("Matrix element being multiplied is non-numerical, type:" + a.GetType());
-                    }
                     
+                    C[i, j] = Convert.ToDouble(a) * b;
                 }
             }
             
@@ -321,6 +334,32 @@ namespace unityai {
 
         // Commutativity of Scalar Multiplication
         public static Mat2D operator *(double a, Mat2D B)
+        {
+            return B * a;
+        }
+
+        // Scalar Addition
+        public static Mat2D operator +(Mat2D A, double b)
+        {
+            // Predefine the resultant matrix
+            Mat2D C = A.Clone();
+
+            for (int i = 0; i < A.Size(0); i++) {
+                for (int j = 0; j < A.Size(1); j++) {
+                    Object a = A[i, j];
+
+                    if (!(a is int || a is float || a is double))
+                        throw new ArithmeticException("Matrix element being multiplied is non-numerical, type:" + a.GetType());
+                    
+                    C[i, j] = Convert.ToDouble(a) + b;
+                }
+            }
+            
+            return C;
+        }
+
+        // Commutativity of Scalar Addition
+        public static Mat2D operator +(double a, Mat2D B)
         {
             return B * a;
         }
