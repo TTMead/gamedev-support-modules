@@ -261,6 +261,40 @@ namespace unityai {
         // Inequality
         public static bool operator !=(Mat2D A, Mat2D B) => !A.Equals(B);
 
+        // Matrix Multiplication
+        public static Mat2D operator *(Mat2D A, Mat2D B)
+        {
+            if (A.Size(1) != B.Size(0))
+                throw new ArithmeticException("Cannot perform matrix multiplication on matrices of these sizes: (" + A.Size(0).ToString() + ", " + A.Size(1).ToString() + ") + (" + B.Size(0).ToString() + ", " + B.Size(1).ToString() + ")");
+            
+            // Predefine the resultant matrix
+            Mat2D C = Mat2D.Zeros(A.Size(0), B.Size(1));
+
+            // Temporary variable to store the sum of each element
+            double result;
+
+            for (int i = 0; i < A.Size(0); i++)
+            {
+                for (int j = 0; j < B.Size(1); j++)
+                {
+                    result = 0;
+                    for (int k = 0; k < A.Size(1); k++)
+                    {
+                        Object a = A[i, k];
+                        Object b = B[k, j];
+
+                        if (!(a is int || a is float || a is double) && (b is int || b is float || b is double))
+                            throw new ArithmeticException("Cannot add matrix elements with these types: (" + a.GetType() + ", " + b.GetType() + ")");
+
+                        result += Convert.ToDouble(a) * Convert.ToDouble(b);
+                    }
+                    C[i, j] = result;
+                }
+            }
+            
+            return C;
+        }
+
         // Element-wise addition
         public static Mat2D operator +(Mat2D A, Mat2D B)
         {
