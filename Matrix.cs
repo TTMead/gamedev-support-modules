@@ -261,6 +261,22 @@ namespace unityai {
         // Inequality
         public static bool operator !=(Mat2D A, Mat2D B) => !A.Equals(B);
 
+        // Transpose
+        public static Mat2D operator ~(Mat2D A)
+        {
+            Mat2D C = Mat2D.Ones(A.Size(1), A.Size(0));
+
+            for (int i = 0; i < C.Size(0); i++)
+            {
+                for (int j = 0; j < C.Size(1); j++)
+                {
+                    C[i, j] = A[j, i];
+                }
+            }
+            
+            return C;
+        }
+
         // Matrix Multiplication
         public static Mat2D operator *(Mat2D A, Mat2D B)
         {
