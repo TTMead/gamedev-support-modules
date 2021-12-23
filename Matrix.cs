@@ -110,8 +110,19 @@ namespace unityai {
         }
 
         // Formats and prints the matrix to the System Console
-        public void PrintMatrix() {
+        public void PrintMatrix(string matrixName = "") {
             string text = "";
+
+            // Add matrix size
+            text = text + m.GetLength(0) + "x" + m.GetLength(1) + " matrix ";
+
+            // Add the matrix name if provided
+            if (matrixName != "")
+                text = text + "\"" + matrixName + "\"";
+            
+            // Add a new line
+            text = text + "\n";
+            
             for (int i = 0; i < m.GetLength(0); i++) {
                 text = text + "| ";
                 for (int j = 0; j < m.GetLength(1); j++) {
@@ -169,6 +180,10 @@ namespace unityai {
 
             return (min, x, y);
         }
+
+
+        // Returns the determinant of a matrix
+        
 
 
         #endregion
