@@ -185,6 +185,30 @@ namespace MatSup {
         // Returns the determinant of a matrix
         
 
+        // Returns whether a matrix is of a single data type
+        public bool isHolistic() {
+
+            Type prevType = m[0, 0].GetType();
+
+            for (int i = 0; i < m.GetLength(0); i++)
+            {
+                for (int j = 0; j < m.GetLength(1); j++)
+                { 
+                    // Get the current cells type
+                    Type currentType = m[i, j].GetType();
+
+                    // Return if it does not match
+                    if (!prevType.Equals(currentType))
+                        return false;
+                    
+                    // Update the previous type
+                    prevType = currentType;
+                }
+            }
+
+            return true;
+        }
+
 
         #endregion
 
