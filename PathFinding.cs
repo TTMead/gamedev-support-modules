@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-namespace unityai {
+namespace MatSup {
 
     class PathFinding {
 
