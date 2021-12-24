@@ -315,7 +315,7 @@ namespace MatSup {
                         Object b = B[k, j];
 
                         if (!(a is int || a is float || a is double) && (b is int || b is float || b is double))
-                            throw new ArithmeticException("Cannot add matrix elements with these types: (" + a.GetType() + ", " + b.GetType() + ")");
+                            throw new ArithmeticException("Cannot multiply matrix elements with these types: (" + a.GetType() + ", " + b.GetType() + ")");
 
                         result += Convert.ToDouble(a) * Convert.ToDouble(b);
                     }
@@ -341,7 +341,7 @@ namespace MatSup {
                     if ((a is int || a is float || a is double) && (b is int || b is float || b is double)) {
                         C[i, j] = Convert.ToDouble(a) + Convert.ToDouble(b);
                     } else if ((a is string || a is char) && (b is string || b is char)) {
-                        C[i, j] = Convert.ToString(a) + Convert.ToString(b);
+                        C[i, j] = Convert.ToString(a) + "+" + Convert.ToString(b);
                     } else {
                         throw new ArithmeticException("Cannot add matrix elements with these types: (" + a.GetType() + ", " + b.GetType() + ")");
                     }
@@ -367,8 +367,18 @@ namespace MatSup {
 
                     if ((a is int || a is float || a is double) && (b is int || b is float || b is double)) {
                         C[i, j] = Convert.ToDouble(a) * Convert.ToDouble(b);
+                    } else if ((a is string || a is char) && (b is string || b is char)) {
+                        // Convert the objects to strings
+                        string a_string = Convert.ToString(a);
+                        string b_string = Convert.ToString(b);
+
+                        // If the string contains an addition, add brackets for mathematical consistency
+                        a_string = (a_string.Contains("+")) ? "("+a_string+")" : a_string;
+                        b_string = (b_string.Contains("+")) ? "("+b_string+")" : b_string;
+
+                        C[i, j] = a_string + b_string;
                     } else {
-                        throw new ArithmeticException("Cannot add matrix elements with these types: (" + a.GetType() + ", " + b.GetType() + ")");
+                        throw new ArithmeticException("Cannot multiply matrix elements with these types: (" + a.GetType() + ", " + b.GetType() + ")");
                     }
                     
                 }
