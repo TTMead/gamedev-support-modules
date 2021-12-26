@@ -41,6 +41,42 @@ namespace MatSup {
             }
         }
 
+        public Mat2D this[int rows, Range cols]
+        {
+            get {
+                if (cols.End.Value < m.GetLength(1) && cols.Start.Value >= 0)
+                    throw new IndexOutOfRangeException("Range out of bounds of this matrix");
+
+                int newCols = 1 + cols.End.Value - cols.Start.Value;
+                Mat2D A = new Mat2D(1, newCols);
+
+                for (int j = 0; j < newCols; j++) {
+                    A[1, j] = m[rows, cols.Start.Value + j];
+                }
+
+                return A;
+            }
+        }
+
+        public Mat2D this[Range rows, int cols]
+        {
+            get {
+                if (rows.End.Value < m.GetLength(0) && rows.Start.Value >= 0)
+                    throw new IndexOutOfRangeException("Range out of bounds of this matrix");
+
+                int newRows = 1 + rows.End.Value - rows.Start.Value;
+                Mat2D A = new Mat2D(newRows, 1);
+
+                for (int i = 0; i < newRows; i++) {
+                    A[i, 1] = m[rows.Start.Value + i, cols];
+                }
+
+                return A;
+            }
+        }
+
+        
+
         // IEnumerable functions
         public IEnumerator GetEnumerator()
         {
@@ -183,30 +219,93 @@ namespace MatSup {
 
 
         // Returns the determinant of a matrix
-        
+        public double det {
+            get {
+                if (!this.isSquare)
+                    throw new ArithmeticException("Cannot find determinant of non-square matrix");
+                
+                if (!this.isNumerical)
+                    throw new ArithmeticException("Cannot find determinant of non-numerical matrix");
 
-        // Returns whether a matrix is of a single data type
-        public bool isHolistic() {
 
-            Type prevType = m[0, 0].GetType();
+                if (m.GetLength(0) == 2) {
+                    double a = Convert.ToDouble(m[0, 0]);
+                    double b = Convert.ToDouble(m[1, 0]);
+                    double c = Convert.ToDouble(m[0, 1]);
+                    double d = Convert.ToDouble(m[1, 1]);
+                    return a*d - b*c;
+                } else {
+                    double sum = 0;
+                    int sign = 1;
+                    for (int i = 0; i < this.cols; i++) {
+                        sum += sign * Convert.ToDouble(m[0, i]) * this[0..(this.cols), 1..(this.rows)].det;
+                        sign *= -1;
+                    }
+                    return sum;
+                }
+            }
+        }
 
-            for (int i = 0; i < m.GetLength(0); i++)
-            {
-                for (int j = 0; j < m.GetLength(1); j++)
-                { 
-                    // Get the current cells type
-                    Type currentType = m[i, j].GetType();
+        public int rows {
+            get => m.GetLength(1);
+        }
 
-                    // Return if it does not match
-                    if (!prevType.Equals(currentType))
-                        return false;
-                    
-                    // Update the previous type
-                    prevType = currentType;
+        public int cols {
+            get => m.GetLength(0);
+        }
+
+        public bool isSquare {
+            get => m.GetLength(0) == m.GetLength(1);
+        }
+
+        public Mat2D DropCol(int col) {
+            Mat2D M = new Mat2D(this.rows, this.cols-1);
+
+            for (int i = 0; i < this.rows; i++) {
+                for (int j = 0; j < this.cols-1; j++) {
+                    // If this is equal to or greater than the column to skip, add 1 to the columns
+                    M[i, j] = M[i, j + ((j >= col) ? 1 : 0)];
                 }
             }
 
-            return true;
+            return M;
+        }
+
+        public bool isNumerical {
+            get {
+                for (int i = 0; i < m.GetLength(0); i++)
+                {
+                    for (int j = 0; j < m.GetLength(1); j++)
+                    { 
+                        if (!(m[i, j] is int || m[i, j] is long || m[i, j] is float ||m[i, j] is double)) return false;
+                    }
+                }
+                return true;
+            }
+        }
+
+        // Returns whether a matrix is of a single data type
+        public bool isHolistic {
+            get {
+                Type prevType = m[0, 0].GetType();
+
+                for (int i = 0; i < m.GetLength(0); i++)
+                {
+                    for (int j = 0; j < m.GetLength(1); j++)
+                    { 
+                        // Get the current cells type
+                        Type currentType = m[i, j].GetType();
+
+                        // Return if it does not match
+                        if (!prevType.Equals(currentType))
+                            return false;
+                        
+                        // Update the previous type
+                        prevType = currentType;
+                    }
+                }
+                return true;
+            }
         }
 
 
